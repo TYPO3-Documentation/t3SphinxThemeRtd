@@ -243,6 +243,23 @@ var Search = {
       }
   },
 
+  /**
+   * sanitize input for html
+   *
+   * Here, we don't correctly convert html entities.
+   * We just make sure it's all converted to harmless +     *
+   *
+   * escape: &, <, >, ", ', `, , !, @, $, %, (, ), =, +, {, }, [, and ]
+   *
+   * see https://wonko.com/post/html-escaping
+   * @param s input string
+   * @returns string
+   */
+  encodeHtml :  function(s) {
+      s = s.replace(/;/g, '+').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/ /g, '+');
+      return s.replace(/[<>'"`!@$%()=+{}[]+/g, '+');
+  },
+
   loadIndex : function(url) {
     $.ajax({type: "GET", url: url, data: null,
             dataType: "script", cache: true,
@@ -469,10 +486,33 @@ var Search = {
       else {
         Search.stopPulse();
         Search.title.text(_('Search Results'));
-        if (!resultCount)
-          Search.status.text(_('Your search did not match any documents. Please make sure that all words are spelled correctly and that you\'ve selected enough categories.'));
-        else
-            Search.status.text(_('Search finished, found %s page(s) matching the search query.').replace('%s', resultCount));
+
+        var searchResultText = '';
+
+        if (!resultCount) {
+            searchResultText = 'Your search did not match any documents. Please make sure that all words are spelled correctly.';
+        } else {
+            searchResultText = 'Search finished, found ' + resultCount + ' page(s) matching the search query.';
+        }
+
+        // Add additional information and link to external search engines
+        var docTitleElement = $("div.wy-side-nav-search ul.sidebartop li.project [href]");
+        var docTitle = '';
+        if (docTitleElement != null) {
+            docTitle = docTitleElement.text();
+        }
+        var encodedQuery = Search.encodeHtml(query);
+        var searchUrl1 = 'https://www.startpage.com/do/dsearch?query=site%3Adocs.typo3.org+' + encodeURI(encodedQuery);
+        var searchUrl2 = 'https://www.google.com/search?q=site%3Adocs.typo3.org+' + encodeURI(encodedQuery);
+        Search.status.html(_( searchResultText
+            + '<hr /><em>The search function only searches within the current manual ' + docTitle + '.</em>'
+            + '<br/> For a wider search, try '
+            + '<ul>'
+            + '<li><a href="' + searchUrl1 + '">startpage.com with site:docs.typo3.org ' + encodedQuery + '</a></li>'
+            + '<li><a href="' + searchUrl2 + '">google.com with site:docs.typo3.org' + encodedQuery + '</a></li>'
+            + '</ul>'
+        ));
+
         Search.status.fadeIn(500);
       }
     }
