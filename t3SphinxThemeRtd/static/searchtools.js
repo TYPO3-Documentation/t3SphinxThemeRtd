@@ -509,7 +509,7 @@ var Search = {
             + '<br/> For a wider search, try '
             + '<ul>'
             + '<li><a href="' + searchUrl1 + '">startpage.com with site:docs.typo3.org ' + encodedQuery + '</a></li>'
-            + '<li><a href="' + searchUrl2 + '">google.com with site:docs.typo3.org' + encodedQuery + '</a></li>'
+            + '<li><a href="' + searchUrl2 + '">google.com with site:docs.typo3.org ' + encodedQuery + '</a></li>'
             + '</ul>'
         ));
 
