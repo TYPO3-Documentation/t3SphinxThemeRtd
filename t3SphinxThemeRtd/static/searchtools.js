@@ -503,14 +503,10 @@ var Search = {
         }
         var encodedQuery = Search.encodeHtml(query);
         var searchUrl1 = 'https://www.startpage.com/do/dsearch?query=site%3Adocs.typo3.org+' + encodeURI(encodedQuery);
-        var searchUrl2 = 'https://www.google.com/search?q=site%3Adocs.typo3.org+' + encodeURI(encodedQuery);
         Search.status.html(_( searchResultText
             + '<hr /><em>The search function only searches within the current manual ' + docTitle + '.</em>'
-            + '<br/> For a wider search, try '
-            + '<ul>'
-            + '<li><a href="' + searchUrl1 + '">startpage.com with site:docs.typo3.org ' + encodedQuery + '</a></li>'
-            + '<li><a href="' + searchUrl2 + '">google.com with site:docs.typo3.org ' + encodedQuery + '</a></li>'
-            + '</ul>'
+            + '<br/> For a wider search, try: '
+            + '<a href="' + searchUrl1 + '">startpage.com with site:docs.typo3.org ' + encodedQuery + '</a>'
         ));
 
         Search.status.fadeIn(500);
