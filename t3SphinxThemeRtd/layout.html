@@ -34,6 +34,10 @@
   <meta name="book-release" content="{{ release|striptags|e }}"/>
   <meta name="book-type"    content="{{ 'Manual' }}"/>
 
+  <meta name="docsearch:name" content="{{ project|striptags|e }}" />
+  <meta name="docsearch:version" content="{{ release|striptags|e }}" />
+  <meta name="docsearch:package_type" content="{{ package_type|striptags|e }}" />
+
   {% block htmltitle %}
   <title>{{ title|striptags|e }}{{ titlesuffix }}</title>
   {% endblock %}
